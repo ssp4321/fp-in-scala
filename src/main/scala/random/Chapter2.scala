@@ -27,7 +27,7 @@ object Chapter2 {
   }
 
   def fibonacci(n: Int): Int = {
-    if (n == 0)
+    if (n == 0 )
       0
     else if (n == 1)
       1
