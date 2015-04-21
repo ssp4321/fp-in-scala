@@ -79,4 +79,67 @@ object Chapter2 {
     }
   }
 
+
+
+  object Misc {
+    /**
+     * Works!
+     *
+     * @param a
+     * @param gt
+     * @tparam A
+     * @return
+     */
+    def isSorted[A](a : Array[A], gt : (A,A) => Boolean) : Boolean = {
+      def loop(n : Int, checkAsc : Boolean) : Boolean = {
+        if (n == a.length-1)
+          true
+        else
+          if (a(n) == a(n+1))
+            loop(n+1, checkAsc)
+          else if (checkAsc && gt(a(n), a(n+1)))
+            false
+          else if (!checkAsc && gt(a(n+1), a(n)))
+            false
+          else
+            loop(n+1, checkAsc)
+      }
+
+      def isAscSorted: Boolean = loop(0, true)
+
+      def isDscSorted: Boolean = loop(0, false)
+
+      if (isAscSorted)
+        true
+      else
+        isDscSorted
+
+    }
+  }
+
+  def partial1[A,B,C] (a : A, f: (A,B) => C) : B => C = {
+    (b : B) => f(a, b)
+  }
+
+  def curry[A,B,C] (f : (A,B) => C) : A => (B => C) = {
+    (a : A) => (b: B) => f(a, b)
+  }
+
+  //A => B => C is same as A => (B => C)
+  def unCurry[A,B,C](f : A => B => C) : (A,B) => C = {
+    (a: A, b: B) => f(a)(b)
+  }
+
+  /**
+   * Compose two functions - same as "f compose g" or "f andThen g" -- actual implementation first triggers g and feeds its input to f
+   * @param f
+   * @param g
+   * @tparam A
+   * @tparam B
+   * @tparam C
+   * @return
+   */
+  def compose[A,B,C] (f : B => C, g : A => B) : A => C = {
+    (a : A) => f(g(a))
+  }
 }
